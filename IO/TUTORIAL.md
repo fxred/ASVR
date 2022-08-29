@@ -1,1 +1,1 @@
-Insert any pair of image and audio to get the video by running the main.py file!
+Insert any pair of image and audio into this folder and get the video by running the main.py file!
