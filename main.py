@@ -6,6 +6,7 @@ from PIL import Image
 import glob
 import sys
 import taglib
+import re
 
 # reading the audio files
 # mp3 files have priority over wave files
@@ -106,16 +107,7 @@ else:
 # finally sanitizing the name (removing special characters)
 # so we can set it as the video filename with no problems
 
-if (name.count('/') != 0) or (name.count(':') != 0) or (name.count('?') != 0) or (name.count('>') != 0) or (name.count('<') != 0):
-  character_replace = {'/': '',
-                    ':': '',
-                    '?': '',
-                    '>': '',
-                    '<': ''}
-  for key, value in character_replace.items():
-    name_sanitized = name.replace(key, value)
-else:
-  name_sanitized = name
+name_sanitized = re.sub('[/:?><]', '', name)
 
 # giving ffmpeg the input files
 
