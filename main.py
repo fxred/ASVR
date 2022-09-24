@@ -36,7 +36,7 @@ if mp3_filename != []:
 
 jpg_filename = glob.glob("IO/*.jpg")
 
-# for the same reason of lines 15-17, an empty list is defined for the secondary file type
+# for the same reason of lines 16-18, an empty list is defined for the secondary file type
 
 png_filename = []
 
@@ -61,7 +61,7 @@ if png_filename != []:
 if jpg_filename == [] and png_filename != []:
   jpg_filename = png_filename
 
-# setting the width (which is also the height) of the video
+# setting the width of the video (which is also the height because of the 1:1 aspect ratio)
 
 if width >= 1440:
   width = 1440
@@ -104,7 +104,7 @@ if "TITLE" in tag:
 else:
   name = mp3_filename[0:len(mp3_filename)-4]
 
-# finally sanitizing the name (removing special characters)
+# finally sanitizing the name (removing special characters) with the regular expressions library
 # so we can set it as the video filename with no problems
 
 name_sanitized = re.sub('[/:?><]', '', name)
@@ -124,6 +124,6 @@ input_audio = ffmpeg.input("IO/{}".format(mp3_filename))
     .run(overwrite_output=True)
 )
 
-# copies the unsanitized name to the user clipboard
+# copies the unsanitized name to the user's clipboard
 
 pyperclip.copy(name)
