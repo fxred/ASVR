@@ -1,1 +1,0 @@
-Insert any pair of image and audio into the IO folder and run the main.py file to generate the video!
