@@ -19,6 +19,7 @@ mp3_filename = glob.glob("IO/*.mp3")
 # is an empty list if there's no files matching the parameters given
 
 wav_filename = []
+flac_filename = []
 
 if mp3_filename == []:
   wav_filename = glob.glob("IO/*.wav")
