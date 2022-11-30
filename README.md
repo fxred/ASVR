@@ -2,9 +2,9 @@
 
 ## Objectives / Description
 
-> #### _ASVR_ is a simple and lightweight Python program to render MP4 videos with a stillimage automatically. It was first designed [by me](https://github.com/fxred) to supply demands of a music-based YouTube channel.
+> #### _ASVR_ is a simple and lightweight Python program to render optimized MP4 ~~music~~ videos with a stillimage automatically. It was first designed [by me](https://github.com/fxred) to supply demands of a music-based YouTube channel.
 >
->> #### If you run into whatever bugs or glitches within the code or just wanna give me any suggestions, feel free to [email me](fxr.ed03@gmail.com). Thanks for the attention!
+>> #### If you run into whatever bugs or glitches within the code or just wanna leave any suggestions, feel free to [email me](fxr.ed03@gmail.com). Thanks for the attention!
 
 ## How to run
 
