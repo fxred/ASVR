@@ -35,6 +35,10 @@ If it doesn't, don't panic and try to understand what's being said and what actu
 * [FFmpeg for Python](https://pypi.org/project/ffmpeg-python): `pip install ffmpeg-python`
 * [Pillow/PIL](https://pypi.org/project/Pillow): `pip install pillow`
 
+### Important Note
+Apparently, `pip install` isn't working properly to install Python packages in some machines, so keep in mind the commands below might not work in some environments. Try swapping `pip install` for `python -m pip install`, `python3 -m pip install` or even `py -m pip install` if the usual pip command doesn't work.
+
+![python -m pip install](wwpLI.png "python -m pip install python -m pip install python -m pip install python -m pip install python -m pip install python -m pip install")
 
 ## Currently supported file types
 
