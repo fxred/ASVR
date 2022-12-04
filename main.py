@@ -1,8 +1,8 @@
-import ffmpeg
-import glob
-from PIL import Image
-import sys
 import os
+import sys
+import glob
+import ffmpeg
+from PIL import Image
 import audioread
 
 
@@ -23,7 +23,7 @@ if len(audio_filenames) > 1:
     print("Which audio file do you want to use?")
 
     for filename in audio_filenames:
-        print("{}: {}".format(audio_filenames.index(filename)+1, filename))
+        print(f"{audio_filenames.index(filename)+1}: {filename}")
 
     desired_audio_filename_index = int(input()) - 1
     desired_audio_filename_string = audio_filenames[desired_audio_filename_index]
@@ -36,7 +36,7 @@ else:
     sys.exit()
 
 
-with audioread.audio_open("IO/{}".format(desired_audio_filename_string)) as f:
+with audioread.audio_open(f"IO/{desired_audio_filename_string}") as f:
     length = f.duration
 
 
@@ -54,7 +54,7 @@ if len(image_filenames) > 1:
     print("Which image file do you want to use?")
 
     for filename in image_filenames:
-        print("{}: {}".format(image_filenames.index(filename)+1, filename))
+        print(f"{image_filenames.index(filename)+1}: {filename}")
 
     desired_image_filename_index = int(input()) - 1
     desired_image_filename_string = image_filenames[desired_image_filename_index]
@@ -67,28 +67,27 @@ else:
     sys.exit()
 
 
-image_file = Image.open("IO/{}".format(desired_image_filename_string))
+image_file = Image.open(f"IO/{desired_image_filename_string}")
 image_width = image_file.width
 image_file.close()
 
 if image_width >= 1440:
-    video_width = 1440
-elif image_width >= 1080 and image_width < 1440:
-    video_width = 1080
+    VIDEO_WIDTH = 1440
+elif 1080 >= image_width < 1440:
+    VIDEO_WIDTH = 1080
 else:
-    video_width = 720
+    VIDEO_WIDTH = 720
 
 
-video_input = ffmpeg.input("IO/{}".format(desired_image_filename_string),
+video_input = ffmpeg.input(f"IO/{desired_image_filename_string}",
                            loop = 1, framerate = 1, t = length)
-audio_input = ffmpeg.input("IO/{}".format(desired_audio_filename_string))
+audio_input = ffmpeg.input(f"IO/{desired_audio_filename_string}")
 
 (
     ffmpeg
     .concat(video_input, audio_input, v = 1, a = 1)
-    .filter('scale', video_width, -1)
-    .output('IO/{}.mp4'.format(
-            os.path.splitext(desired_audio_filename_string)[0]),
+    .filter('scale', VIDEO_WIDTH, -1)
+    .output(f'IO/{os.path.splitext(desired_audio_filename_string)[0]}.mp4',
             acodec = 'mp3', audio_bitrate = '320k')
     .run(overwrite_output = True)
 )
