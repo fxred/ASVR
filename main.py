@@ -4,6 +4,7 @@ import glob
 import ffmpeg
 from PIL import Image
 import audioread
+import cv2
 
 
 filenames_mp3 = [os.path.basename(filename) for
@@ -34,7 +35,6 @@ elif len(audio_filenames) == 1:
 else:
     print("No audio files! Please insert an audio file into the IO directory.")
     sys.exit()
-
 
 with audioread.audio_open(f"IO/{desired_audio_filename_string}") as f:
     length = f.duration
@@ -67,27 +67,35 @@ else:
     sys.exit()
 
 
-image_file = Image.open(f"IO/{desired_image_filename_string}")
-image_width = image_file.width
-image_file.close()
+with Image.open(f"IO/{desired_image_filename_string}") as image_file:
+    image_width = image_file.width
+    image_height = image_file.height
 
-if image_width >= 1440:
-    VIDEO_WIDTH = 1440
-elif 1080 >= image_width < 1440:
-    VIDEO_WIDTH = 1080
+if image_height >= 1250:
+    ratio = 1440/image_height
+    width_height = (int(image_width*ratio), 1440)
+elif 900 <= image_height < 1250:
+    ratio = 1080/image_height
+    width_height = (int(image_width*ratio), 1080)
 else:
-    VIDEO_WIDTH = 720
+    ratio = 720/image_height
+    width_height = (int(image_width*ratio), 720)
+
+image = cv2.imread(f"IO/{desired_image_filename_string}")
+new_image = cv2.resize(image, width_height, interpolation = cv2.INTER_LANCZOS4)
+cv2.imwrite(f"IO/temp_{desired_image_filename_string}", new_image)
 
 
-video_input = ffmpeg.input(f"IO/{desired_image_filename_string}",
+video_input = ffmpeg.input(f"IO/temp_{desired_image_filename_string}",
                            loop = 1, framerate = 1, t = length)
 audio_input = ffmpeg.input(f"IO/{desired_audio_filename_string}")
 
 (
     ffmpeg
     .concat(video_input, audio_input, v = 1, a = 1)
-    .filter('scale', VIDEO_WIDTH, -1)
     .output(f'IO/{os.path.splitext(desired_audio_filename_string)[0]}.mp4',
             acodec = 'mp3', audio_bitrate = '320k')
     .run(overwrite_output = True)
 )
+
+os.remove(f"IO/temp_{desired_image_filename_string}")
