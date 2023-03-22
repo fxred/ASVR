@@ -1,0 +1,4 @@
+audioread==2.1.9
+ffmpeg-python==0.2.0
+Pillow==9.0.1
+opencv-python==4.7.0.68

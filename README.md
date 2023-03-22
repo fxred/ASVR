@@ -9,8 +9,7 @@
 ## How to run
 
 * First off, clone [this repository](https://github.com/fxred/ASVR);
-* Download and install all the dependencies listed [here](#dependencies).
-
+* If you decide not to use Docker, download and install all the dependencies listed [here](#dependencies). Otherwise, //link-to-TODO-DOCKER-DOC//
 
 When you're all set, drag an audio and an image file ([check the list of supported file types](#currently-supported-file-types)) into the **IO** folder inside your directory and, finally, run the **main.py** file.
 
@@ -22,6 +21,10 @@ Otherwise (i.e. you threw multiple audio/image files inside of it), you're gonna
 If everything goes well, an MP4 video will be generated inside the __IO__ folder, alongside the audio + image files.
 If it doesn't, don't panic and try to understand what's being said and what actually happened. Send me an [email](mailto:fxr.ed03@gmail.com) if you have any questions about the program functioning.
 
+
+## Using Docker to run the application
+
+//TODO-DOCKER-DOC//
 
 ## Dependencies
 

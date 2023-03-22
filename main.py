@@ -6,7 +6,6 @@ from PIL import Image
 import audioread
 import cv2
 
-
 filenames_mp3 = [os.path.basename(filename) for
                 filename in glob.glob("IO/*.mp3")]
 
