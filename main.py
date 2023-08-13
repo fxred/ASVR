@@ -73,13 +73,22 @@ with Image.open(f"IO/{desired_image_filename_string}") as image_file:
 
 if image_height >= 1250:
     ratio = 1440/image_height
-    width_height = (round(image_width*ratio), 1440)
+    if round(image_width*ratio)%2 == 1:
+        width_height = (round(image_width*ratio)+1, 1440)
+    else:
+        width_height = (round(image_width*ratio), 1440)
 elif 900 <= image_height < 1250:
     ratio = 1080/image_height
-    width_height = (round(image_width*ratio), 1080)
+    if round(image_width*ratio)%2 == 1:
+        width_height = (round(image_width*ratio)+1, 1080)
+    else:
+        width_height = (round(image_width*ratio), 1080)
 else:
     ratio = 720/image_height
-    width_height = (round(image_width*ratio), 720)
+    if round(image_width*ratio)%2 == 1:
+        width_height = (round(image_width*ratio)+1, 720)
+    else:
+        width_height = (round(image_width*ratio), 720)
 
 image = cv2.imread(f"IO/{desired_image_filename_string}")
 new_image = cv2.resize(image, width_height, interpolation = cv2.INTER_LANCZOS4)
