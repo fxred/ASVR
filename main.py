@@ -72,8 +72,8 @@ else:
     sys.exit()
 
 image = cv2.imread(f"IO/{desired_image_filename_string}")
-image_width = image.shape[0]
-image_height = image.shape[1]
+image_width = image.shape[1]
+image_height = image.shape[0]
 
 if image_height >= 1250:
     ratio = 1440/image_height
