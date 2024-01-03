@@ -4,6 +4,7 @@ import glob
 import ffmpeg
 import audioread
 import cv2
+import time
 
 
 filenames_mp3 = [os.path.basename(filename) for
@@ -35,7 +36,8 @@ elif len(audio_filenames) == 1:
     desired_audio_filename_string = audio_filenames[0]
 
 else:
-    print("No audio files! Please insert an audio file into the IO directory.")
+    print("No audio files! Please insert an audio file into the IO directory and run the script again.")
+    time.sleep(2)
     sys.exit()
 
 with audioread.audio_open(f"IO/{desired_audio_filename_string}") as f:
@@ -65,7 +67,8 @@ elif len(image_filenames) == 1:
     desired_image_filename_string = image_filenames[0]
 
 else:
-    print("No image files! Please insert an image file into the IO directory.")
+    print("No image files! Please insert an image file into the IO directory and run the script again.")
+    time.sleep(2)
     sys.exit()
 
 image = cv2.imread(f"IO/{desired_image_filename_string}")
