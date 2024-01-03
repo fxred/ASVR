@@ -75,24 +75,49 @@ image = cv2.imread(f"IO/{desired_image_filename_string}")
 image_width = image.shape[1]
 image_height = image.shape[0]
 
-if image_height >= 1250:
-    ratio = 1440/image_height
-    if round(image_width*ratio)%2 == 1:
-        width_height = (round(image_width*ratio)+1, 1440)
+# lines 81-120 assure that the dimension (width or height) with the least pixels is
+# scaled exactly to the amount of pixels on each predefined tuple (1440, 1080 or 720)
+
+min_dimension = min(image_width, image_height)
+if min_dimension == image_width:
+    if image_width >= 1250:
+        ratio = 1440/image_width
+        if round(image_height*ratio)%2 == 1:
+            width_height = (1440, round(image_height*ratio)+1)
+        else:
+            width_height = (1440, round(image_height*ratio))
+    elif 900 <= image_width < 1250:
+        ratio = 1080/image_width
+        if round(image_height*ratio)%2 == 1:
+            width_height = (1080, round(image_height*ratio)+1)
+        else:
+            width_height = (1080, round(image_height*ratio))
     else:
-        width_height = (round(image_width*ratio), 1440)
-elif 900 <= image_height < 1250:
-    ratio = 1080/image_height
-    if round(image_width*ratio)%2 == 1:
-        width_height = (round(image_width*ratio)+1, 1080)
+        ratio = 720/image_width
+        if round(image_height*ratio)%2 == 1:
+            width_height = (720, round(image_height*ratio)+1)
+        else:
+            width_height = (720, round(image_height*ratio))
+
+elif min_dimension == image_height:
+    if image_height >= 1250:
+        ratio = 1440/image_height
+        if round(image_width*ratio)%2 == 1:
+            width_height = (round(image_width*ratio)+1, 1440)
+        else:
+            width_height = (round(image_width*ratio), 1440)
+    elif 900 <= image_height < 1250:
+        ratio = 1080/image_height
+        if round(image_width*ratio)%2 == 1:
+            width_height = (round(image_width*ratio)+1, 1080)
+        else:
+            width_height = (round(image_width*ratio), 1080)
     else:
-        width_height = (round(image_width*ratio), 1080)
-else:
-    ratio = 720/image_height
-    if round(image_width*ratio)%2 == 1:
-        width_height = (round(image_width*ratio)+1, 720)
-    else:
-        width_height = (round(image_width*ratio), 720)
+        ratio = 720/image_height
+        if round(image_width*ratio)%2 == 1:
+            width_height = (round(image_width*ratio)+1, 720)
+        else:
+            width_height = (round(image_width*ratio), 720)
 
 resized_image = cv2.resize(image, width_height, interpolation = cv2.INTER_LANCZOS4)
 cv2.imwrite(f"IO/resize_{desired_image_filename_string}", resized_image)
