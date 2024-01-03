@@ -33,7 +33,6 @@ If it doesn't, don't panic and try to understand what's being said and what actu
 
 * [Audioread](https://pypi.org/project/audioread): `pip install audioread`
 * [FFmpeg for Python](https://pypi.org/project/ffmpeg-python): `pip install ffmpeg-python`
-* [Pillow/PIL](https://pypi.org/project/Pillow): `pip install pillow`
 * [OpenCV](https://pypi.org/project/opencv-python): `pip install opencv-python`
 
 ### Important Note
