@@ -2,7 +2,6 @@ import os
 import sys
 import glob
 import ffmpeg
-from PIL import Image
 import audioread
 import cv2
 
@@ -66,10 +65,9 @@ else:
     print("No image files! Please insert an image file into the IO directory.")
     sys.exit()
 
-
-with Image.open(f"IO/{desired_image_filename_string}") as image_file:
-    image_width = image_file.width
-    image_height = image_file.height
+image = cv2.imread(f"IO/{desired_image_filename_string}")
+image_width = image.shape[0]
+image_height = image.shape[1]
 
 if image_height >= 1250:
     ratio = 1440/image_height
@@ -90,12 +88,10 @@ else:
     else:
         width_height = (round(image_width*ratio), 720)
 
-image = cv2.imread(f"IO/{desired_image_filename_string}")
-new_image = cv2.resize(image, width_height, interpolation = cv2.INTER_LANCZOS4)
-cv2.imwrite(f"IO/temp_{desired_image_filename_string}", new_image)
+resized_image = cv2.resize(image, width_height, interpolation = cv2.INTER_LANCZOS4)
+cv2.imwrite(f"IO/resize_{desired_image_filename_string}", resized_image)
 
-
-video_input = ffmpeg.input(f"IO/temp_{desired_image_filename_string}",
+video_input = ffmpeg.input(f"IO/resize_{desired_image_filename_string}",
                            loop = 1, framerate = 1, t = length)
 audio_input = ffmpeg.input(f"IO/{desired_audio_filename_string}")
 
@@ -107,4 +103,4 @@ audio_input = ffmpeg.input(f"IO/{desired_audio_filename_string}")
     .run(overwrite_output = True)
 )
 
-os.remove(f"IO/temp_{desired_image_filename_string}")
+os.remove(f"IO/resize_{desired_image_filename_string}")
