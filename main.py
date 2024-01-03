@@ -101,11 +101,14 @@ video_input = ffmpeg.input(f"IO/resize_{desired_image_filename_string}",
                            loop = 1, framerate = 1, t = length)
 audio_input = ffmpeg.input(f"IO/{desired_audio_filename_string}")
 
+# the function below sets the arguments for video and audio codecs
+# using flac as acodec speeds up the processing time, but the video filesize becomes bigger
+# use libopus as acodec to improve filesize (at the cost of slowing down processing time by a factor of 2)
 (
     ffmpeg
     .concat(video_input, audio_input, v = 1, a = 1)
     .output(f'IO/{os.path.splitext(desired_audio_filename_string)[0]}.mp4',
-            acodec = 'mp3', audio_bitrate = '320k')
+            acodec = 'flac')
     .run(overwrite_output = True)
 )
 
