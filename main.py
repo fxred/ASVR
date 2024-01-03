@@ -9,13 +9,16 @@ import cv2
 filenames_mp3 = [os.path.basename(filename) for
                 filename in glob.glob("IO/*.mp3")]
 
+filenames_opus = [os.path.basename(filename) for
+                filename in glob.glob("IO/*.opus")]
+
 filenames_wav = [os.path.basename(filename) for
                 filename in glob.glob("IO/*.wav")]
 
 filenames_flac = [os.path.basename(filename) for
                 filename in glob.glob("IO/*.flac")]
 
-audio_filenames = filenames_flac + filenames_mp3 + filenames_wav
+audio_filenames = filenames_mp3 + filenames_opus + filenames_wav + filenames_flac
 
 
 if len(audio_filenames) > 1:

@@ -46,7 +46,8 @@ Apparently, `pip install` isn't working properly to install Python packages in s
 
 __MP3__ (.mp3) <br>
 __FLAC__ (.flac) <br>
-__WAVE__ (.wav)
+__WAVE__ (.wav) <br>
+__OPUS__ (.opus)
 
 ### Image files:
 
