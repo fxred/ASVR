@@ -34,6 +34,7 @@ If it doesn't, don't panic and try to understand what's being said and what actu
 * [Audioread](https://pypi.org/project/audioread): `pip install audioread`
 * [FFmpeg for Python](https://pypi.org/project/ffmpeg-python): `pip install ffmpeg-python`
 * [Headless OpenCV](https://pypi.org/project/opencv-python-headless): `pip install opencv-python-headless`
+* [NumPy](https://pypi.org/project/numpy/) `pip install numpy`
 
 ### Important Note
 Apparently, `pip install` isn't working properly to install Python packages in some machines, so keep in mind the commands above might not work in some environments (especially if you recently installed Python). In this case, try swapping `pip install` for `python -m pip install`, `python3 -m pip install` or even `py -m pip install` if the usual pip command doesn't work.
