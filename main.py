@@ -5,6 +5,7 @@ import ffmpeg
 import audioread
 import cv2
 import time
+import numpy as np
 
 
 filenames_mp3 = [os.path.basename(filename) for
@@ -71,12 +72,20 @@ else:
     time.sleep(2)
     sys.exit()
 
-image = cv2.imread(f"IO/{desired_image_filename_string}")
+
+with open(f"IO/{desired_image_filename_string}", 'rb') as f:
+    image_bytes = f.read()
+
+image_array = np.asarray(bytearray(image_bytes), dtype=np.uint8)
+image = cv2.imdecode(image_array, cv2.IMREAD_COLOR)
+
 image_width = image.shape[1]
 image_height = image.shape[0]
 
-# lines 81-120 assure that the dimension (width or height) with the least pixels is
-# scaled exactly to the amount of pixels on each predefined tuple (1440, 1080 or 720)
+# the following lines assure that the dimension (width or height) with the least pixels
+# is scaled exactly to the amount of pixels on each predefined tuple (1440, 1080 or 720)
+# and the other dimension is scaled proportionally. that ensures we don't end up with
+# resolutions that are slightly below 1440, 1080 or 720p
 
 min_dimension = min(image_width, image_height)
 if min_dimension == image_width:
@@ -119,8 +128,18 @@ elif min_dimension == image_height:
         else:
             width_height = (round(image_width*ratio), 720)
 
+
 resized_image = cv2.resize(image, width_height, interpolation = cv2.INTER_LANCZOS4)
-cv2.imwrite(f"IO/resize_{desired_image_filename_string}", resized_image)
+
+image_extension = os.path.splitext(desired_image_filename_string)[1] # getting image format
+
+success, encoded_image = cv2.imencode(image_extension, resized_image)
+
+if success:
+    output_path = f"IO/resize_{desired_image_filename_string}"
+    with open(output_path, 'wb') as f:
+        f.write(encoded_image)
+
 
 video_input = ffmpeg.input(f"IO/resize_{desired_image_filename_string}",
                            loop = 1, framerate = 1, t = length)
@@ -129,6 +148,7 @@ audio_input = ffmpeg.input(f"IO/{desired_audio_filename_string}")
 # the function below sets the arguments for video and audio codecs
 # using flac as acodec speeds up the processing time, but the video filesize becomes bigger
 # use libopus as acodec to improve filesize (at the cost of slowing down processing time by a factor of 2)
+
 (
     ffmpeg
     .concat(video_input, audio_input, v = 1, a = 1)
