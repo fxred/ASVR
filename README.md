@@ -57,5 +57,5 @@ __PNG__ (.png)
 
 ## Warnings
 
-* Please do **not** modify the directory structure apart from the inside of the __IO__ folder if you don't know exactly what you're doing;
+* Do **not** modify the directory structure apart from the inside of the __IO__ folder unless you know exactly what you're doing;
 * Make sure you correctly installed all the dependencies listed above in your machine before running the script. They're all vital for the proper code functioning.
