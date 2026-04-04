@@ -6,6 +6,8 @@ import audioread
 import cv2
 import time
 import numpy as np
+import platform
+import subprocess
 
 
 filenames_mp3 = [os.path.basename(filename) for
@@ -22,6 +24,49 @@ filenames_flac = [os.path.basename(filename) for
 
 audio_filenames = filenames_mp3 + filenames_opus + filenames_wav + filenames_flac
 
+def get_gpu_encoder() -> str:
+    # detects GPU vendor and returns the appropriate FFmpeg h264 encoder string
+    os_name = platform.system()
+    hardware_info = ""
+
+    try:
+        if os_name == "Windows":
+            hardware_info = subprocess.check_output(
+                [
+                    "powershell", 
+                    "-NoProfile", 
+                    "-Command", 
+                    "Get-CimInstance -ClassName Win32_VideoController | Select-Object -ExpandProperty Name"
+                ], 
+                text=True
+            ).lower()
+        
+        elif os_name == "Linux":
+            hardware_info = subprocess.check_output(["lspci"], text = True).lower()
+        
+        elif os_name == "Darwin":
+            hardware_info = subprocess.check_output(
+                ["system_profiler", "SPDisplaysDataType"], 
+                text = True
+            ).lower()
+            
+            return 'h264_videotoolbox'
+
+    except Exception as e:
+        print(f"Warning: Could not auto-detect GPU (Error: {e}). Defaulting to CPU!!!")
+        time.sleep(2)
+        return 'libx264'
+
+    if "nvidia" in hardware_info:
+        return 'h264_nvenc'
+    elif "amd" in hardware_info or "radeon" in hardware_info:
+        return 'h264_amf'
+    elif "intel" in hardware_info:
+        return 'h264_qsv'
+    else:
+        print("Warning: GPU manufacturer not recognized. Defaulting to CPU!!!")
+        time.sleep(2)
+        return 'libx264'
 
 if len(audio_filenames) > 1:
 
@@ -153,7 +198,7 @@ audio_input = ffmpeg.input(f"IO/{desired_audio_filename_string}")
     ffmpeg
     .concat(video_input, audio_input, v = 1, a = 1)
     .output(f'IO/{os.path.splitext(desired_audio_filename_string)[0]}.mp4',
-            acodec = 'flac')
+            vcodec = get_gpu_encoder(), acodec = 'flac')
     .run(overwrite_output = True)
 )
 
