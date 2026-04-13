@@ -1,0 +1,11 @@
+# Note: The FFmpeg binary must be installed separately. (https://ffmpeg.org)
+
+ffmpeg-python>=0.2.0
+numpy>=1.21.0
+opencv-python>=4.5.3.56
+audioread>=2.1.9
+tinytag>=1.8.0
+google-auth>=2.6.0
+google-auth-oauthlib>=0.4.6
+google-api-python-client>=2.70.0
+google-auth-httplib2>=0.1.0
