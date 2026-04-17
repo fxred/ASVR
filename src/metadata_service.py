@@ -10,6 +10,8 @@ class MetadataService:
     def build_title(self) -> str:
         """Build the video title from audio metadata or filename fallback."""
         try:
+            video_title = ""
+            
             tag = TinyTag.get(self.audio_path)
 
             if tag.artist and tag.title:
@@ -18,7 +20,7 @@ class MetadataService:
         except Exception as e:
             print(f"Warning: Could not read tags ({e}). Using filename as title.")
 
-        if not video_title:
+        if video_title == "":
             video_title = os.path.splitext(os.path.basename(self.audio_path))[0]
 
         print(f"Video title: {video_title}")
